@@ -4,8 +4,9 @@ const deleteButton = document.querySelector("#delete");
 const equalButton = document.querySelector("#enter");
 const display = document.querySelector("#display");
 const numberButtons = document.querySelectorAll('.number');
+const decimalButton = document.querySelector('#point');
 
-let input = [];
+let input = [0];
 let numberOne = 0;
 let numberTwo = 0;
 let operator = "";
@@ -17,6 +18,13 @@ numberButtons.forEach(button => button.addEventListener('click',() => {
     input.push(button.innerText);
     display.textContent = +input.join('');
 }));
+
+decimalButton.addEventListener('click',() => {
+    if (!input.includes(".")) {
+        input.push(decimalButton.innerText);
+        display.textContent = +input.join('');
+    }
+});
 
 operatorButtons.forEach(button => button.addEventListener('click',() => {
     operator = button.innerText;
@@ -54,7 +62,7 @@ function round(value, decimals) {
 };
 
 function reset() {
-    input = [];
+    input = [0];
     numberOne = 0;
     numberTwo = 0;
     operator = "";
