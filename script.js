@@ -5,17 +5,61 @@ const equalButton = document.querySelector("#enter");
 const display = document.querySelector("#display");
 const numberButtons = document.querySelectorAll('.number');
 
+let input = [];
+let numberOne = 0;
+let numberTwo = 0;
+let operator = "";
+let result = 0;
+
+display.textContent = 0;
+
+numberButtons.forEach(button => button.addEventListener('click',() => {
+    input.push(button.innerText);
+    display.textContent = +input.join('');
+}));
+
+operatorButtons.forEach(button => button.addEventListener('click',() => {
+    operator = button.innerText;
+    display.textContent = button.innerText;
+    numberOne = +input.join('');
+    input = [];
+}));
+
+equalButton.addEventListener('click',() => {
+    numberTwo = +input.join('');
+    result = operate(operator, numberOne, numberTwo);
+    result = round(result, 3);
+    display.textContent = result;
+    
+});
+
+clearButton.addEventListener('click',() => {
+    reset();
+    display.textContent = "Cleared";
+});
+
+deleteButton.addEventListener('click',() => {
+    input.pop();
+    display.textContent = +input.join('');
+});
+
+
 
 function updateDisplay() {
 
 }
 
-numberButtons.forEach(button => button.addEventListener('click',() => {
-    display.textContent = button.innerText;
-    //display.textContent = buttonContent;
-}))
+function round(value, decimals) {
+    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+};
 
-
+function reset() {
+    input = [];
+    numberOne = 0;
+    numberTwo = 0;
+    operator = "";
+    result = 0;
+};
 
 
 //preforms the desired operation based on defined operator and numbers
