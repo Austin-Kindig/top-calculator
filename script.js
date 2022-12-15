@@ -27,18 +27,29 @@ decimalButton.addEventListener('click',() => {
 });
 
 operatorButtons.forEach(button => button.addEventListener('click',() => {
+    if (operator != "") {
+        result = evaluate();
+        display.textContent = `${result} ${button.innerText}`;
+    } else {
     operator = button.innerText;
-    display.textContent = button.innerText;
-    numberOne = +input.join('');
-    input = [];
+    display.textContent = operator;
+    if (numberOne === 0) {
+        numberOne = +input.join('');
+    }}
+    operator = button.innerText;
+    input = [0];
 }));
 
 equalButton.addEventListener('click',() => {
-    numberTwo = +input.join('');
-    result = operate(operator, numberOne, numberTwo);
-    result = round(result, 3);
+    if ((operator == "/") && (+input.join("") == 0)) {
+        reset();
+        alert('https://tinyurl.com/2b7ms3wb')
+        display.textContent = ";P";
+    } else {
+    result = evaluate();
     display.textContent = result;
-    
+    operator = "";
+    }
 });
 
 clearButton.addEventListener('click',() => {
@@ -55,6 +66,15 @@ deleteButton.addEventListener('click',() => {
 
 function updateDisplay() {
 
+}
+
+function evaluate () {
+    numberTwo = +input.join('');
+    result = operate(operator, numberOne, numberTwo)
+    result = round(result, 3)
+    numberOne = result;
+    input = [0];
+    return result;
 }
 
 function round(value, decimals) {
@@ -83,6 +103,9 @@ const operate = function(operator, numberOne, numberTwo) {
     }
     if (operator == "/") {
         return divide(numberOne, numberTwo);
+    }
+    if (operator == "") {
+        return 0;
     }
 };
 
