@@ -6,33 +6,39 @@ const display = document.querySelector("#display");
 const numberButtons = document.querySelectorAll('.number');
 const decimalButton = document.querySelector('#point');
 
+//initialize global variables
 let input = [0];
 let numberOne = 0;
 let numberTwo = 0;
 let operator = "";
 let result = 0;
 
-display.textContent = 0;
+//initialize display
+updateDisplay(0);
 
 numberButtons.forEach(button => button.addEventListener('click',() => {
+    //collect user input and display on gui
     input.push(button.innerText);
-    display.textContent = +input.join('');
+    updateDisplay(+input.join(''));
 }));
 
 decimalButton.addEventListener('click',() => {
+    //permit user only one decimal per input string
     if (!input.includes(".")) {
         input.push(decimalButton.innerText);
-        display.textContent = +input.join('');
+        updateDisplay(+input.join(''));
     }
 });
 
 operatorButtons.forEach(button => button.addEventListener('click',() => {
+    // allow user to string multiple expressions together at once
     if (operator != "") {
         result = evaluate();
-        display.textContent = `${result} ${button.innerText}`;
+        updateDisplay(`${result} ${button.innerText}`);
     } else {
+    //(standard operator functionality) save input to var and take note of desired operator
     operator = button.innerText;
-    display.textContent = operator;
+    updateDisplay(operator);
     if (numberOne === 0) {
         numberOne = +input.join('');
     }}
@@ -41,33 +47,37 @@ operatorButtons.forEach(button => button.addEventListener('click',() => {
 }));
 
 equalButton.addEventListener('click',() => {
+    //divide by zero error
     if ((operator == "/") && (+input.join("") == 0)) {
         reset();
         alert('https://tinyurl.com/2b7ms3wb')
-        display.textContent = ";P";
+        updateDisplay(";P");
     } else {
+    //prefrom standard algebra and return result
     result = evaluate();
-    display.textContent = result;
+    updateDisplay(result);
     operator = "";
     }
 });
 
 clearButton.addEventListener('click',() => {
+    //return variables to initialized state
     reset();
-    display.textContent = "Cleared";
+    updateDisplay("Cleared");
 });
 
 deleteButton.addEventListener('click',() => {
+    //allow user to remove last digit from input
     input.pop();
-    display.textContent = +input.join('');
+    updateDisplay(+input.join(''));
 });
 
-
-
-function updateDisplay() {
-
+//changes display text based on input
+function updateDisplay(content) {
+    display.textContent = content;
 }
 
+//preforms user-defined operation two different numbers
 function evaluate () {
     numberTwo = +input.join('');
     result = operate(operator, numberOne, numberTwo)
@@ -77,10 +87,12 @@ function evaluate () {
     return result;
 }
 
+//preforms and accurate rounding operation on floats
 function round(value, decimals) {
     return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 };
 
+//returns global variables to their initial values
 function reset() {
     input = [0];
     numberOne = 0;
